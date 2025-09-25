@@ -27,21 +27,25 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Data Departemen </h1>
+                    <h1 class="h3 mb-2 text-gray-800">Data Karyawan </h1>
                     
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Departemen</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Data Karyawan</h6>
                         </div>
                         <div class="card-body">
-                            <a class="btn btn-primary mb-3" href="{{route('departemen.create')}}"> Tambah Data </a>
+                            <a class="btn btn-primary mb-3" href="{{route('karyawan.create')}}"> Tambah Data </a>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Departemen</th>
+                                            <th>Nip</th>
+                                            <th>Nama Karyawan</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Gaji Karyawan</th>
+                                            <th>Alamat</th>
                                             <th>Aksi</th>
                                            
                                         </tr>
@@ -49,13 +53,17 @@
                                     
                                     <tbody>
                                         <?php $no = 1 ?>
-                                        @foreach ($departemen as $departemen)
+                                        @foreach ($karyawan as $karyawan)
                                         <tr>
                                             <td>{{$no++}}</td>
-                                            <td>{{$departemen->nama_departemen}}</td>
+                                            <td>{{$karyawan->nip}}</td>
+                                            <td>{{$karyawan->nama_karyawan}}</td>
+                                            <td>{{$karyawan->jenis_kelamin}}</td>
+                                            <td>{{$karyawan->gaji_karyawan}}</td>
+                                            <td>{{$karyawan->alamat}}</td>
                                             <td>
-                                            <a class="btn btn-sm btn-primary" href ="{{url('departemen/'.$departemen->kodedepartemen.'/edit')}}">Edit</a>
-                                            <form action="{{url('departemen/'.$departemen->kodedepartemen)}}" method="POST" style="display: inline-block">
+                                            <a class="btn btn-sm btn-primary" href ="{{url('karyawan/'.$karyawan->nip.'/edit')}}">Edit</a>
+                                            <form action="{{url('karyawan/'.$karyawan->nip)}}" method="POST" style="display: inline-block">
                                             @csrf 
                                             @method('Delete')
                                             <button class="btn btn sm btn-danger" onclick="return confirm ('Apakah kamu yakin menghapus data ini?')"> Delete
