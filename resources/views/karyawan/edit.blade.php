@@ -6,7 +6,7 @@
 <p class="alert alert-danger">{{ $err }}</p>
 @endforeach
 @endif
-<form action="{{url('karyawan/'.$data->nip)}}" method="post">
+<form action="{{url('karyawan/'.$data->nip)}}" method="post" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="row">
@@ -25,12 +25,12 @@
 
                 <div class="form-group">
                     <label>Nama Karyawan </label>
-                    <input type="text" class="form-control" name="nama_karyawan" value="{{$data->nama_karyawan}}">>
+                    <input type="text" class="form-control" name="nama_karyawan" value="{{$data->nama_karyawan}}">
                     </div>
 
                 <div class="form-group">
                     <label>Gaji Karyawan</label>
-                    <input type="number" class="form-control" name="gaji_karyawan"value="{{$data->gaji_karyawan}}">>
+                    <input type="number" class="form-control" name="gaji_karyawan"value="{{$data->gaji_karyawan}}">
                     </div>
 
                 <div class="form-group">
@@ -47,7 +47,17 @@
                         <option value="Wanita"  {{$data->jenis_kelamin == 'Wanita' ? 'selected': ''}}>Wanita</option>
 
                     </select>
-                   </div>
+                   </div>                   
+                   
+                   @if($data->foto)
+                   <div class="form-group">
+                   <img style="max-width:100px; max-height:100px" src="{{url('foto').'/'.$data->foto}}">
+                  </div>
+                  @endif
+                  <div class="form-group">
+                    <label for="foto">Upload Foto Karyawan </label>
+                    <input type="file" class="form-control-file" id="foto" name="foto">
+                    </div>
 
             </div>    
 

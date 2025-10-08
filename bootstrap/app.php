@@ -21,3 +21,4 @@ $middleware->alias([
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
+ 

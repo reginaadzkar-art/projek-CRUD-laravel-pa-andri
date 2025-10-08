@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File; 
+
+ 
 
 class KaryawanController extends Controller
 {
@@ -39,6 +42,7 @@ class KaryawanController extends Controller
             'gaji_karyawan'=>'required',
             'alamat'=>'required',
             'jenis_kelamin'=>'required',
+            'foto'=>'required |mimes:jpg,png,jpeg,gif',
         ],[
 
             'nip.required' => 'NIP Wajib Diisi',
@@ -46,7 +50,14 @@ class KaryawanController extends Controller
             'gaji_karyawan.required' => 'Gaji Karyawan Wajib Diisi',
             'alamat.required' => 'Alamat Wajib Diisi',
             'jenis_kelamin.required' => 'Jenis Kelamin  Wajib Diisi',
+            'foto.required'=>'Foto Wajib Diisi',
+            'foto.mimes'=>'Foto Diperbolehkan Berekstensi jpg,png,jpeg,gif',
         ]);
+
+        $foto_file = $request->file('foto');
+        $foto_ekstensi = $foto_file->extension();
+        $foto_nama = date('ymdhis').".".$foto_ekstensi;
+        $foto_file->move(public_path('foto'),$foto_nama);
 
         $data =[
             'nip' => $request->input('nip'),
@@ -54,6 +65,7 @@ class KaryawanController extends Controller
             'gaji_karyawan' => $request->input('gaji_karyawan'),
             'alamat' => $request->input('alamat'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
+            'foto'=> $foto_nama, 
 
         ];
         Karyawan::create($data);
@@ -107,16 +119,39 @@ class KaryawanController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
 
         ];
+
+        if($request->hasFile('foto')) {
+            $request->validate([
+                'foto' => 'mimes:jpg,png,jpeg,gif',
+            ],[
+                'foto.mimes' => 'Foto Diperbolehakan Berekstensi jpg,png,jpeg,gif',
+            ]);
+            $foto_file = $request->file('foto');
+            $foto_ekstensi = $foto_file->extension();
+            $foto_nama = date('ymdhis').".".$foto_ekstensi;
+            $foto_file->move(public_path('foto'),$foto_nama);
+
+            $data_foto = Karyawan::Where('nip',$id)->first();
+            File::delete(public_path('foto').'/'.$data_foto->foto);
+
+            $data['foto'] = $foto_nama;
+        }
+
         Karyawan::where('nip',$id)->update($data);
         return redirect('karyawan')->with('success','Nama Karyawan Berhasil Diubah');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
+
+        $data = Karyawan::where('nip',$id)->first();
+
+        File::delete(public_path('foto').'/'.$data->foto);
+
         Karyawan::where('nip',$id)->delete();
         return redirect('karyawan')->with('success','Nama Karyawan Berhasil Dihapus');
     }

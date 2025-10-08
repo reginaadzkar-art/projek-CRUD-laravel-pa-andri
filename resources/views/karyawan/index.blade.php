@@ -41,6 +41,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Foto Karyawan</th>
                                             <th>Nip</th>
                                             <th>Nama Karyawan</th>
                                             <th>Jenis Kelamin</th>
@@ -56,6 +57,11 @@
                                         @foreach ($karyawan as $karyawan)
                                         <tr>
                                             <td>{{$no++}}</td>
+                                            <td>
+                                                @if($karyawan->foto)
+                                                <img style="max-width:100px; max-height:100px" src="{{url('foto').'/'.$karyawan->foto}}">
+                                                @endif
+                                            </td>
                                             <td>{{$karyawan->nip}}</td>
                                             <td>{{$karyawan->nama_karyawan}}</td>
                                             <td>{{$karyawan->jenis_kelamin}}</td>
